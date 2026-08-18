@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OctoStore Admin Portal Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Segoe UI Extra Light', 'Segoe UI Light', 'Segoe UI Semilight', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 200;
+        }
+        
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('https://learn-attachment.microsoft.com/api/attachments/94fda143-a475-4529-8957-8d1aba911f4b?platform=QnA');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+        
+        .metro-grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(0, 120, 215, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 120, 215, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(40, 40, 40, 0.95);
+            padding: 50px 40px;
+            border: 1px solid #e81123;
+            border-left: 6px solid #e81123;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo-icon {
+            font-size: 4rem;
+            color: #0078d7;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: rgba(232,17,35, 0.1);
+            border: 2px solid #e81123;
+            margin: 0 auto 25px auto;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 300;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #555;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 300;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #e81123;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(232,17,35, 0.3);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background-color: #e81123;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #8B0000;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .alert {
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid;
+            display: none;
+        }
+        
+        .alert-error {
+            background-color: rgba(232, 17, 35, 0.1);
+            color: #e81123;
+            border-color: #e81123;
+            border-left: 6px solid #e81123;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #444;
+        }
+        
+        .back-link a {
+            color: #e81123;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .back-link a:hover {
+            color: #8B0000;
+            transform: translateX(-5px);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #e81123;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .metro-tile {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .metro-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .accent-red { color: #e81123; }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 25px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo p {
+                font-size: 1rem;
+            }
+            
+            input[type="text"],
+            input[type="password"] {
+                padding: 14px 16px;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 14px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="metro-grid-bg"></div>
+    
+    <div class="login-container metro-tile">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-lock accent-red"></i>
+            </div>
+            <h1>Admin Login</h1>
+            <p>OctoStore Admin DashBoard</p>
+        </div>
+        
+        <div id="errorAlert" class="alert alert-error">
+            <i class="fas fa-exclamation-circle accent-red"></i> <span id="errorMessage"></span>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <span style="color: #a0a0a0;">Authenticating...</span>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        
+        <div class="back-link">
+            <a href="../index.html">
+                <i class="fas fa-arrow-left"></i> Back to Submission Form
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+            
+            document.getElementById('errorAlert').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.querySelector('.btn-primary').style.display = 'none';
+            
+            // Invia la richiesta a auth.php
+            fetch('auth.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.btn-primary').style.display = 'flex';
+                
+                if (data.success) {
+                    document.querySelector('.login-container').style.transform = 'translateY(-10px)';
+                    document.querySelector('.login-container').style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4)';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'manage_apps.php';
+                    }, 500);
+                } else {
+                    showError(data.message || 'Login failed. Please check your credentials.');
+                    document.querySelector('.login-container').style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        document.querySelector('.login-container').style.animation = '';
+                    }, 500);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.btn-primary').style.display = 'flex';
+                showError('Network error. Please try again.');
+                console.error('Error:', error);
+            });
+        });
+        
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorAlert').style.display = 'block';
+            document.getElementById('errorAlert').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.getElementById('username').focus();
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"e2208cb59558407f9b21e11dae96c44c","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>
