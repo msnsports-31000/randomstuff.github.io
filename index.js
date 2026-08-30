@@ -18,11 +18,11 @@ async function fetchCatalogCount() {
 
     const apps = xmlDoc.querySelectorAll("app");
 
-    countEl.textContent = apps.length;
-    statusEl.textContent = "Live";
+    if (countEl) countEl.textContent = apps.length;
+    if (statusEl) statusEl.textContent = "Live";
   } catch (err) {
-    statusEl.textContent = "Offline";
-    countEl.textContent = "0";
+    if (statusEl) statusEl.textContent = "Offline";
+    if (countEl) countEl.textContent = "0";
   }
 }
 
